@@ -1,14 +1,13 @@
-import { Navigate } from "react-router-dom"
-import React from "react"
+import { Navigate } from "react-router-dom";
 
-function Protected({element}){
-   
-    const email = localStorage.getItem("email")
-    const password = localStorage.getItem("password")
-    if(!email || !password){
-        return <Navigate to='/' replace/>
-    }
-    return element
-}
+const Protected = ({ children }) => {
+  const token = localStorage.getItem("token");
 
-export default Protected
+  if (!token) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
+
+export default Protected;

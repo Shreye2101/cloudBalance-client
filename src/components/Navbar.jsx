@@ -16,15 +16,10 @@ const Navbar = () => {
     setIsOpen(prev => !prev)
  } 
 
- const handleLogout = () =>{
-   localStorage.removeItem("email")
-   localStorage.removeItem("password")
-    navigate('/')
- }
-
-
-
-
+ const handleLogout = () => {
+  localStorage.clear(); 
+  navigate("/", { replace: true });
+};
 
   return (
     <div className='main flex border border-grey-400'>

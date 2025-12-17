@@ -11,19 +11,24 @@ import NotFound from "./pages/NotFound/NotFound";
 
 const App = () => {
   return (
-    <Router>
-      <ToastContainer/>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/dashboard" element={<Protected element={<DashBoard />} />}>
-          
-          <Route path="users" element={<Protected element={<Table />} />} /> 
-      
-          <Route path="add-user" element={<Protected element={<AddUser />} />} />
-        </Route>
-        <Route path="*" element={<NotFound/>}/>
-      </Routes>
-    </Router>
+   <Router>
+  <ToastContainer />
+  <Routes>
+    <Route path="/" element={<Login />} />
+
+    <Route
+      path="/dashboard"
+      element={<Protected><DashBoard /></Protected>}
+    >
+      <Route path="users" element={<Table />} />
+      <Route path="add-user" element={<AddUser />} />
+    </Route>
+
+    <Route path="*" element={<NotFound />} />
+
+  </Routes>
+</Router>
+
   );
 };
 

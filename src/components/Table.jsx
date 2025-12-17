@@ -1,26 +1,40 @@
-import React,{ useEffect, useState, useContext, useCallback } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import { SideBarContext } from "../context/SideBarContext";
 import { useNavigate } from "react-router-dom";
-
+import api from "../api/axios";
 
 const Table = () => {
   const [data, setData] = useState([]);
   const { isOpen } = useContext(SideBarContext);
   const navigate = useNavigate();
 
-  const fetchApi = useCallback(async () => {
-    const res = await fetch("http://localhost:8080/api/users");
-    const json = await res.json();
-    setData(json);
-  },[])
+  const fetchUsers = async () => {
+    try {
+      const res = await api.get("/api/users");
+      setData(res?.data);
+
+    } catch (err) {
+      console.error("Failed to fetch users", err);
+
+      
+      if (err.response?.status === 401 || err.response?.status === 403) {
+        
+        navigate("/", { replace: true });
+      }
+    }
+  };
 
   useEffect(() => {
-    fetchApi();
-  }, [fetchApi]);
+    fetchUsers();
+  }, []);
 
   const handleAddUserClick = () => {
-    navigate("/dashboard/add-user"); 
+    navigate("/dashboard/add-user");
+  };
+
+  const handleEditUserClick = (user) => {
+    navigate("/dashboard/add-user", { state: { user } });
   };
 
   return (
@@ -38,9 +52,8 @@ const Table = () => {
         Add User
       </button>
 
-      <div className=" rounded-lg shadow-md bg-white max-h-[70vh] overflow-y-auto">
+      <div className="rounded-lg shadow-md bg-white max-h-[70vh] overflow-y-auto">
         <table className="min-w-full">
-    
           <thead className="bg-sky-50 sticky top-0 z-10">
             <tr>
               <th className="p-3">ID</th>
@@ -61,9 +74,12 @@ const Table = () => {
                 <td className="p-3">{user.lastName}</td>
                 <td className="p-3">{user.email}</td>
                 <td className="p-3">User</td>
-                <td className="p-3">2025-01-15</td>
+                <td className="p-3">{user.lastLogin || "N/A"}</td>
                 <td className="p-3">
-                  <button className="text-blue-600 hover:text-blue-800">
+                   <button
+                    onClick={() => handleEditUserClick(user)}
+                    className="text-blue-600 hover:text-blue-800"
+                  >
                     <EditIcon fontSize="small" />
                   </button>
                 </td>

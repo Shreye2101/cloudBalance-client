@@ -1,34 +1,67 @@
-import React, { useEffect, useState } from 'react'
-import logo from '../../assets/cloudkeeper.webp'
-import {useNavigate} from 'react-router-dom'
-import DashBoard from '../Dashboard/DashBoard'
+import React, { useEffect, useState } from 'react';
+import logo from '../../assets/cloudkeeper.webp';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import api from "../../api/axios";
 
 const Login = () => {
-  const navigate = useNavigate()
-  const [count,setCount] = useState(0)
-  useEffect(() => {
-    const email = localStorage.getItem("email");
-    const password = localStorage.getItem("password");
+  const navigate = useNavigate();
 
-    if (email && password) {
-      navigate('/dashboard/users', { replace: true });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/dashboard/users", { replace: true });
     }
   }, [navigate]);
 
-  useEffect(()=>{
-     setCount(count + 1)}
-  ,[])
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  
-  const handleSubmit = (e) =>{
-     e.preventDefault();
-     const email = e.target.email.value
-     const password = e.target.password.value
-     localStorage.setItem("email",email)
-     localStorage.setItem("password",password)
-     console.log("email and password saved successfully");
-     navigate('dashboard/users');
-  }
+    if (loading) return;
+    setError("");
+    setLoading(true);
+
+    const email = e.target.email.value.trim();
+    const password = e.target.password.value;
+
+    try {
+      const response = await api.post("/api/auth/login", {
+        email,
+        password,
+      });
+
+      const token = response.data?.token;
+
+      if (!token) {
+        throw new Error("Token missing");
+      }
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("userEmail", email);
+
+      navigate("/dashboard/users", { replace: true });
+
+    } catch (err) {
+      console.error("Login failed", err);
+
+      const status = err.response?.status;
+
+      if (status === 401) {
+        setError("Invalid email or password");
+      } else if (!err.response) {
+        setError("Server not reachable. Please try again.");
+      } else {
+        setError("Login failed. Please try again later.");
+      }
+
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
    <div className="min-h-screen flex flex-col items-center justify-center">
   
@@ -40,28 +73,36 @@ const Login = () => {
     />
    </div>
 
-   <form onSubmit={(e)=>handleSubmit(e)} className="flex flex-col gap-3 w-80">
+   <form onSubmit={handleSubmit} className="flex flex-col gap-3 w-80">
+    
+    {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+
     <label>Email:</label>
     <input 
-    name='email' 
-    type='email' 
-    className="border p-2 rounded"
-    placeholder='enter your email'
+      name='email' 
+      type='email' 
+      required
+      className="border p-2 rounded"
+      placeholder='enter your email'
     />
 
     <label>Password:</label>
     <input 
-    name='password' 
-    type='password' 
-    className="border p-2 rounded"
-    placeholder='enter your password' />
+      name='password' 
+      type='password' 
+      required
+      className="border p-2 rounded"
+      placeholder='enter your password' 
+    />
 
-    <button  className="bg-blue-400 text-white p-2 rounded mt-2 cursor-pointer">
-      Login
+    <button 
+      disabled={loading}
+      className={`p-2 rounded mt-2 text-white ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-400 cursor-pointer'}`}
+    >
+      {loading ? "Logging in..." : "Login"}
     </button>
    </form>
    </div>
-
   )
 }
 
