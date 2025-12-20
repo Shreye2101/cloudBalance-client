@@ -97,9 +97,7 @@ const AddUser = () => {
 
   return (
     <div
-      className={`transition-all duration-300 p-6 ${
-        isOpen ? "ml-[260px]" : "ml-20"
-      }`}
+      className={`transition-all duration-300 p-6 `}
     >
       <h1 className="text-2xl font-bold mb-6">{user ? "Edit User" : "Add New User"}</h1>
 
