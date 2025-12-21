@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import StepBadge from './components/StepBadge';
 import step5 from './assets/step5.png'; 
 import onboarding2 from './assets/onboarding2.png'; 
 import onboarding1 from './assets/onboarding1.png'; 
+import OnBoardingContext from './context/OnBoardingContext';
 
-const AddPolicies = ({ onBack, onNext }) => {
+const AddPolicies = () => {
+  const {onBack,onNext} = useContext(OnBoardingContext)
   return (
     <div className="space-y-12 animate-fadeIn">
 

@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import CopyTextarea from './components/CopyTextarea';
 import StepBadge from './components/StepBadge';
 import step5Image from '../../assets/step5.png'; 
 import TRUST_POLICY from './data/TrustPolicy';
+import OnBoardingContext from './context/OnBoardingContext';
 
-const CreateIAMRole = ({ roleArn, setRoleArn, onNext, isArnValid }) =>{
+const CreateIAMRole = () =>{
+  const {roleArn,setRoleArn,onNext,isArnValid} = useContext(OnBoardingContext)
   const roleName = 'CK-Tuner-Role-dev2';
 
   return (
