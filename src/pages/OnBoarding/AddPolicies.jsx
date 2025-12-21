@@ -1,10 +1,10 @@
 import React from 'react';
 import StepBadge from './components/StepBadge';
-import step5 from '../../assets/step5.png'; 
-import onboarding2 from '../../assets/onboarding2.png'; 
-import onboarding1 from '../../assets/onboarding1.png'; 
+import step5 from './assets/step5.png'; 
+import onboarding2 from './assets/onboarding2.png'; 
+import onboarding1 from './assets/onboarding1.png'; 
 
-export default function AddPolicies({ onBack, onNext }) {
+const AddPolicies = ({ onBack, onNext }) => {
   return (
     <div className="space-y-12 animate-fadeIn">
 
@@ -77,3 +77,5 @@ export default function AddPolicies({ onBack, onNext }) {
     </div>
   );
 }
+
+export default AddPolicies;

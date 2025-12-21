@@ -1,10 +1,10 @@
 import React from 'react';
 import StepBadge from './components/StepBadge';
-import cur1 from '../../assets/CUR1.png'; 
-import cur2 from '../../assets/CUR2.png';
-import cur3 from '../../assets/CUR3.png';
+import cur1 from './assets/CUR1.png'; 
+import cur2 from './assets/CUR2.png';
+import cur3 from './assets/CUR3.png';
 
-export default function CreateUserReport({ onBack, onSubmit }) {
+const CreateUserReport = ({ onBack, onSubmit }) => {
   const reportName = "ck-tuner-275595855473-hourly-cur";
   const pathPrefix = "275595855473";
 
@@ -82,3 +82,7 @@ export default function CreateUserReport({ onBack, onSubmit }) {
     </div>
   );
 }
+
+export default CreateUserReport;
+
+

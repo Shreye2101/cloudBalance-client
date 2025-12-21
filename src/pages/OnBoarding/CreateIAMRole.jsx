@@ -2,33 +2,9 @@ import React from 'react';
 import CopyTextarea from './components/CopyTextarea';
 import StepBadge from './components/StepBadge';
 import step5Image from '../../assets/step5.png'; 
+import TRUST_POLICY from './data/TrustPolicy';
 
-const TRUST_POLICY = {
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::951485052809:role/ck-tuner-nonprod-transitive-role"
-      },
-      "Action": "sts:AssumeRole",
-      "Condition": {
-        "StringEquals": {
-          "sts:ExternalId": "MU1HX0RFRkFVTFQwMzM5NTZlYS1kMDE3LTRjYmQtYjY3ZS1jMGI4NWJjY2U4Yzk="
-        }
-      }
-    },
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "s3.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-};
-
-export default function CreateIAMRole({ roleArn, setRoleArn, onNext, isArnValid }) {
+const CreateIAMRole = ({ roleArn, setRoleArn, onNext, isArnValid }) =>{
   const roleName = 'CK-Tuner-Role-dev2';
 
   return (
@@ -113,3 +89,5 @@ export default function CreateIAMRole({ roleArn, setRoleArn, onNext, isArnValid 
     </div>
   );
 }
+
+export default CreateIAMRole;

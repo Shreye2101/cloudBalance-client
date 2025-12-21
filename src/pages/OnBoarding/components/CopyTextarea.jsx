@@ -1,5 +1,5 @@
 import React from 'react';
-export default function CopyTextarea({ value }) {
+const CopyTextarea = ({ value })=> {
   const copyToClipboard = async () => {
     await navigator.clipboard.writeText(value);
     alert('Copied ');
@@ -22,3 +22,5 @@ export default function CopyTextarea({ value }) {
     </div>
   );
 }
+
+export default CopyTextarea;
