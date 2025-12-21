@@ -1,10 +1,24 @@
+import React from 'react';
 import { Navigate } from "react-router-dom";
-import React from "react";
+import { jwtDecode } from "jwt-decode";
 
 const Protected = ({ children }) => {
   const token = localStorage.getItem("token");
 
   if (!token) {
+    return <Navigate to="/" replace />;
+  }
+
+  try {
+    const decoded = jwtDecode(token);
+    const currentTime = Date.now() 
+
+    if (decoded.exp < currentTime) {
+      localStorage.removeItem("token");
+      return <Navigate to="/" replace />;
+    }
+  } catch (error) {
+    localStorage.removeItem("token");
     return <Navigate to="/" replace />;
   }
 
