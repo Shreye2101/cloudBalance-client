@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import CopyTextarea from './components/CopyTextarea';
 import StepBadge from './components/StepBadge';
-import step5Image from '../../assets/step5.png'; 
+import step5Image from './assets/step5.png'; 
 import TRUST_POLICY from './data/TrustPolicy';
-import OnBoardingContext from './context/OnBoardingContext';
+import {OnBoardingContext} from './context/OnBoardingContext';
 
 const CreateIAMRole = () =>{
-  const {roleArn,setRoleArn,onNext,isArnValid} = useContext(OnBoardingContext)
+  const {roleArn,setRoleArn,handleNext,isArnValid} = useContext(OnBoardingContext)
   const roleName = 'CK-Tuner-Role-dev2';
 
   return (
@@ -79,7 +79,7 @@ const CreateIAMRole = () =>{
       <div className="mt-16 pt-8 border-t flex justify-between items-center">
         <button className="px-6 py-2 border rounded text-gray-500 hover:bg-gray-50 font-medium">Cancel</button>
         <button 
-          onClick={onNext}
+          onClick={handleNext}
           disabled={!isArnValid}
           className={`px-8 py-2 rounded font-semibold text-sm transition-all ${
             isArnValid ? 'bg-[#2b3a67] text-white hover:bg-[#1a2544]' : 'bg-[#a3b1d1] text-white cursor-not-allowed'

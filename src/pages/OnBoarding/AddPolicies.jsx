@@ -3,10 +3,10 @@ import StepBadge from './components/StepBadge';
 import step5 from './assets/step5.png'; 
 import onboarding2 from './assets/onboarding2.png'; 
 import onboarding1 from './assets/onboarding1.png'; 
-import OnBoardingContext from './context/OnBoardingContext';
+import {OnBoardingContext} from './context/OnBoardingContext';
 
 const AddPolicies = () => {
-  const {onBack,onNext} = useContext(OnBoardingContext)
+  const {handleBack,handleNext} = useContext(OnBoardingContext)
   return (
     <div className="space-y-12 animate-fadeIn">
 
@@ -63,13 +63,13 @@ const AddPolicies = () => {
         </button>
         <div className="flex gap-3">
           <button 
-            onClick={onBack}
+            onClick={handleBack}
             className="px-6 py-2 border border-blue-600 text-blue-600 rounded font-semibold text-sm hover:bg-blue-50 transition-all"
           >
             Back - Create An IAM Role
           </button>
           <button 
-            onClick={onNext}
+            onClick={handleNext}
             className="px-8 py-2 bg-[#2b3a67] text-white rounded font-semibold text-sm hover:bg-[#1a2544] transition-all"
           >
             Next - Setup CUR Replication

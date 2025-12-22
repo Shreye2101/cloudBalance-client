@@ -1,8 +1,8 @@
 import React, {createContext,useContext,useState} from 'react'
 
-const onBoardingContext = createContext();
+export const OnBoardingContext = createContext();
 
-export default onBoardingProvider = ({children}) =>{
+export const OnBoardingProvider = ({children}) =>{
     const [currentPage, setCurrentPage] = useState(1);
     const [roleArn, setRoleArn] = useState("");
 
@@ -21,8 +21,8 @@ export default onBoardingProvider = ({children}) =>{
      handleBack,
   };
     return (
-        <onBoardingContext.Provider value={value}>
+        <OnBoardingContext.Provider value={value}>
         {children}
-        </onBoardingContext.Provider>
+        </OnBoardingContext.Provider>
     )
 }

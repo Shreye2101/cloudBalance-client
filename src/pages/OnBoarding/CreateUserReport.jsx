@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import StepBadge from './components/StepBadge';
 import cur1 from './assets/CUR1.png'; 
 import cur2 from './assets/CUR2.png';
 import cur3 from './assets/CUR3.png';
+import {OnBoardingContext} from './context/OnBoardingContext';
 
-const CreateUserReport = ({ onBack, onSubmit }) => {
+const CreateUserReport = () => {
+  const {handleBack,onSubmit} = useContext(OnBoardingContext)
   const reportName = "ck-tuner-275595855473-hourly-cur";
   const pathPrefix = "275595855473";
 
@@ -66,7 +68,7 @@ const CreateUserReport = ({ onBack, onSubmit }) => {
         <button className="px-6 py-2 border border-gray-300 rounded text-gray-600 font-medium">Cancel</button>
         <div className="flex gap-3">
           <button 
-            onClick={onBack}
+            onClick={handleBack}
             className="px-6 py-2 border border-blue-600 text-blue-600 rounded font-semibold text-sm hover:bg-blue-50 transition-all"
           >
             Back - Setup CUR Replication
