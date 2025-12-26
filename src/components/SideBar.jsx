@@ -2,9 +2,14 @@ import React ,{ useContext } from 'react';
 import { SideBarContext } from '../context/SideBarContext';
 import { FaUser, FaAws, FaClipboardList, FaDollarSign } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
 const SideBar = () => {
+  const { user } = useAuth();
   const { isOpen } = useContext(SideBarContext);
+  const token = localStorage.getItem("token");
+  const decoded = token ? jwtDecode(token) : null;
+  const userRole = decoded?.role;
 
   const base =
     'flex items-center gap-3 p-2 rounded-md transition cursor-pointer';
@@ -21,6 +26,7 @@ const SideBar = () => {
           <h1 className="text-xl font-bold text-center mb-4">SideBar</h1>
         )}
 
+       {user?.role==='ADMIN' &&
         <NavLink
           to="/dashboard/users"
           className={({ isActive }) =>
@@ -30,6 +36,7 @@ const SideBar = () => {
           <FaUser />
           {isOpen && <span>User</span>}
         </NavLink>
+         }
 
         <NavLink
           to="/dashboard/aws-services"
@@ -41,6 +48,7 @@ const SideBar = () => {
           {isOpen && <span>AWS Services</span>}
         </NavLink>
 
+        {user?.role==='ADMIN' &&
         <NavLink
           to="/dashboard/onboarding"
           className={({ isActive }) =>
@@ -50,6 +58,7 @@ const SideBar = () => {
           <FaClipboardList />
           {isOpen && <span>Account Onboarding</span>}
         </NavLink>
+        }
 
         <NavLink
           to="/dashboard/cost-explorer"
