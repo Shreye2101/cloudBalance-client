@@ -39,10 +39,11 @@ const Login = () => {
         throw new Error("Token missing");
       }
 
+      console.log(token);
       localStorage.setItem("token", token);
       localStorage.setItem("userEmail", email);
 
-      navigate("/dashboard/users", { replace: true });
+      navigate("/dashboard", { replace: true });
 
     } catch (err) {
       console.error("Login failed", err);
