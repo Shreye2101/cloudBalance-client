@@ -12,39 +12,46 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import NotFound from "./pages/NotFound/NotFound";
 import SideBarProvider from "./context/SideBarProvider";
+import { AuthProvider } from "./context/AuthContext";
 
 const App = () => {
   return (
+    <AuthProvider>
+
     <SideBarProvider>
-   <Router>
-  <ToastContainer />
-  <Routes>
-  
-    <Route path="/" element={<Login />} />
+      <Router>
+        <ToastContainer />
+        <Routes>
+          <Route path="/" element={<Login />} />
 
-    <Route
-      path="/dashboard"
-      element={
-        <Protected>
-          <DashBoard />
-        </Protected>
-      }
-    >
-      <Route index element={<Table />} />
+          <Route path="/dashboard" element={<Protected><DashBoard /></Protected>}>
+            <Route index element={
+            <Protected allowedRoles={['ADMIN', 'READ_ONLY']}>
+            <Table />
+            </Protected>
+             } />
+            
+            <Route path="users" element={
+              <Protected allowedRoles={['ADMIN', 'READ_ONLY']}><Table /></Protected>
+            } />
+            
+            <Route path="add-user" element={
+              <Protected allowedRoles={['ADMIN']}><AddUser /></Protected>
+            } />
 
-      <Route path="users" element={<Table />} />
-      <Route path="add-user" element={<AddUser />} />
-      <Route path="aws-services" element={<AwsService />} />
-      <Route path="onboarding" element={<OnBoarding />} />
-      <Route path="cost-explorer" element={<CostExplorer />} />
-    </Route>
+            <Route path="aws-services" element={<AwsService />} />
+            <Route path="cost-explorer" element={<CostExplorer />} />
 
-  
-    <Route path="*" element={<NotFound />} />
-  </Routes>
-</Router>
-</SideBarProvider>
+            <Route path="onboarding" element={
+              <Protected allowedRoles={['ADMIN', 'READ_ONLY']}><OnBoarding /></Protected>
+            } />
+          </Route>
 
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
+    </SideBarProvider>
+    </AuthProvider>
   );
 };
 
