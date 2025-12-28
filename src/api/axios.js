@@ -1,10 +1,10 @@
 import axios from "axios";
+import { toast } from "react-toastify"; // Optional: to notify the user
 
 const api = axios.create({
   baseURL: "http://localhost:8080",
-  timeout: 10000, 
+  timeout: 10000,
 });
-
 
 api.interceptors.request.use(
   (config) => {
@@ -22,15 +22,20 @@ api.interceptors.response.use(
   (error) => {
     const status = error.response?.status;
 
-    
-    if ((status === 401 || status === 403) && error.response?.data?.message !== "Email already exists") {
-  localStorage.removeItem("token");
-  window.location.href = "/";
-}
+  
+    if (status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/";
+    }
 
-    
+    if (status === 403) {
+      console.error("Access Denied: You do not have the required role.");
+      toast.error("You don't have permission to perform this action.");
+ 
+    }
+
     if (!error.response) {
-      console.error("Network error or server not reachable");
+      toast.error("Server is unreachable. Please check your connection.");
     }
 
     return Promise.reject(error);
