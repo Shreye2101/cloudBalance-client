@@ -3,9 +3,11 @@ import logo from '../../assets/cloudkeeper.webp';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import api from "../../api/axios";
+import { useAuth } from '../../context/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -28,21 +30,14 @@ const Login = () => {
     const password = e.target.password.value;
 
     try {
-      const response = await api.post("/api/auth/login", {
-        email,
-        password,
-      });
-
+      const response = await api.post("/api/auth/login", { email, password });
       const token = response.data?.token;
 
-      if (!token) {
-        throw new Error("Token missing");
-      }
+      if (!token) throw new Error("Token missing");
 
-      console.log(token);
-      localStorage.setItem("token", token);
+      login(token); 
+      
       localStorage.setItem("userEmail", email);
-
       navigate("/dashboard", { replace: true });
 
     } catch (err) {
