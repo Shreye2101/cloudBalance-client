@@ -3,27 +3,22 @@ import EditIcon from "@mui/icons-material/Edit";
 import { SideBarContext } from "../context/SideBarContext";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
+import { jwtDecode } from "jwt-decode";
 
 const Table = () => {
   const [data, setData] = useState([]);
   const { isOpen } = useContext(SideBarContext);
   const navigate = useNavigate();
+  const userRole = localStorage.getItem("token") ? jwtDecode(localStorage.getItem("token")).role : null;
 
   const fetchUsers = async () => {
-    try {
-      const res = await api.get("/api/users");
-      setData(res?.data);
-
-    } catch (err) {
-      console.error("Failed to fetch users", err);
-
-      
-      if (err.response?.status === 401 || err.response?.status === 403) {
-        
-        navigate("/", { replace: true });
-      }
-    }
-  };
+  try {
+    const res = await api.get("/api/users");
+    setData(res?.data);
+  } catch (err) {
+    console.error("Failed to fetch users", err);
+  }
+};
 
   useEffect(() => {
     fetchUsers();
@@ -41,13 +36,15 @@ const Table = () => {
     <div className="p-6 transition-all duration-300">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-800">User Table</h1>
-        
+
+       {userRole === 'ADMIN' && ( 
         <button
           onClick={handleAddUserClick}
           className="px-4 py-2 bg-sky-400 text-white rounded-md hover:bg-sky-500 transition-all font-medium text-base"
         >
           Add User
         </button>
+       )}
       </div>
 
       <div className="rounded-xl border border-gray-200 shadow-sm bg-white overflow-hidden">
@@ -88,6 +85,7 @@ const Table = () => {
                   </td>
 
                   <td className="px-6 py-5 text-right">
+                    {userRole==='ADMIN' ? (
                     <button
                       onClick={() => handleEditUserClick(user)}
                       className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
@@ -95,6 +93,9 @@ const Table = () => {
                     >
                       <EditIcon fontSize="medium" />
                     </button>
+                     ) : (
+                    <span className="text-gray-400 text-sm italic">View Only</span>
+                     )}               
                   </td>
                 </tr>
               ))}

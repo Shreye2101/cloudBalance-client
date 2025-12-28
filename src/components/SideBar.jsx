@@ -3,12 +3,16 @@ import { SideBarContext } from '../context/SideBarContext';
 import { FaUser, FaAws, FaClipboardList, FaDollarSign } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import { useAuth } from '../context/AuthContext';
 
 const SideBar = () => {
   const { user } = useAuth();
   const { isOpen } = useContext(SideBarContext);
   const token = localStorage.getItem("token");
   const decoded = token ? jwtDecode(token) : null;
+  console.log("decoded token in sidebar : " , decoded);
+  
+  // const userRole = 'ADMIN';
   const userRole = decoded?.role;
 
   const base =
@@ -26,7 +30,7 @@ const SideBar = () => {
           <h1 className="text-xl font-bold text-center mb-4">SideBar</h1>
         )}
 
-       {user?.role==='ADMIN' &&
+       {(user?.role==='ADMIN'|| user?.role=='READ_ONLY') && 
         <NavLink
           to="/dashboard/users"
           className={({ isActive }) =>
@@ -48,7 +52,7 @@ const SideBar = () => {
           {isOpen && <span>AWS Services</span>}
         </NavLink>
 
-        {user?.role==='ADMIN' &&
+        {(user?.role==='ADMIN'|| user?.role=='READ_ONLY') &&
         <NavLink
           to="/dashboard/onboarding"
           className={({ isActive }) =>

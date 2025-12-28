@@ -3,7 +3,7 @@ import { useContext, useState, useEffect } from "react";
 import { SideBarContext } from "../context/SideBarContext";
 import React from "react";
 import { toast } from "react-toastify";
-import api from "../api/axios"; // ✅ axios interceptor
+import api from "../api/axios"; 
 import { FormContext } from "../context/FormContext";
 
 const AddUser = () => {
@@ -174,9 +174,9 @@ const AddUser = () => {
               className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-600 bg-white"
             >
               <option value="" disabled>Select Role</option>
-              <option value="USER">User</option>
-              <option value="ADMIN">Admin</option>
-              <option value="MANAGER">Manager</option>
+              <option value="ADMIN">ADMIN</option>
+              <option value="CUSTOMER">CUSTOMER</option>
+              <option value="READ_ONLY">READ_ONLY</option>
             </select>
           </div>
         </div>
