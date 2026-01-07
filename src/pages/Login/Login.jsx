@@ -12,12 +12,20 @@ const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/dashboard/users", { replace: true });
+useEffect(() => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    try {
+      const decoded = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+      if (decoded.exp > currentTime) {
+        navigate("/dashboard/users", { replace: true });
+      }
+    } catch (e) {
+      localStorage.removeItem("token");
     }
-  }, [navigate]);
+  }
+}, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,13 +39,14 @@ const Login = () => {
 
     try {
       const response = await api.post("/api/auth/login", { email, password });
-      const token = response.data?.token;
-
-      if (!token) throw new Error("Token missing");
-
-      login(token); 
       
-      localStorage.setItem("userEmail", email);
+      const accessToken = response.data?.token;
+
+      if (!accessToken) throw new Error("Token missing");
+
+      login(accessToken); 
+      //localStorage.setItem("userEmail", email);
+      
       navigate("/dashboard", { replace: true });
 
     } catch (err) {
