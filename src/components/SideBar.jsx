@@ -26,9 +26,6 @@ const SideBar = () => {
       ${isOpen ? 'w-[260px]' : 'w-20'}`}
     >
       <div className="h-full flex flex-col gap-4 p-4">
-        {isOpen && (
-          <h1 className="text-xl font-bold text-center mb-4">SideBar</h1>
-        )}
 
        {(user?.role==='ADMIN'|| user?.role=='READ_ONLY') && 
         <NavLink

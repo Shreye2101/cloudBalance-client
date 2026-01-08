@@ -4,12 +4,14 @@ import { SideBarContext } from "../context/SideBarContext";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { jwtDecode } from "jwt-decode";
+import { useAuth } from "../context/AuthContext";
 
 const Table = () => {
   const [data, setData] = useState([]);
   const { isOpen } = useContext(SideBarContext);
   const navigate = useNavigate();
-  const userRole = localStorage.getItem("token") ? jwtDecode(localStorage.getItem("token")).role : null;
+  const {user} = useAuth();
+  const userRole = user?.role;
 
   const fetchUsers = async () => {
   try {

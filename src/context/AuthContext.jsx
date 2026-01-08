@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import api from '../api/axios';
+import { replace, useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -26,7 +28,7 @@ const logout = async () => {
 
     localStorage.clear();
     setUser(null);
-    window.location.href = "/";
+    window.location.href = "/"
   }
 };
 
